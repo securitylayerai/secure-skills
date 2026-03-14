@@ -11,7 +11,7 @@ Skills are installed via [skills.sh](https://skills.sh), which automatically det
 coding agent and installs to the right location.
 
 ```bash
-npx skills add <owner>/<skill-name>
+npx skills add securitylayerai/skills --skill <skill-name>
 ```
 
 No pre-installation required — runs directly via `npx`. Supports 38+ agents including Claude
@@ -36,6 +36,11 @@ them, keeps improvements, reverts failures, and loops until you stop it (~12 exp
 - Write a high-quality `program.md` strategy document (the human's primary lever)
 - Install and configure the original LLM training target (minimize `val_bpb`)
 - Adapt the loop to any measurable target: bundle size, test speed, Lighthouse scores, API latency, build time
+
+**Install:**
+```bash
+npx skills add securitylayerai/skills --skill autoresearch
+```
 
 **Triggers on:** "autoresearch", "autonomous experiments", "overnight optimization", "program.md"
 

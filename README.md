@@ -3,7 +3,22 @@
 A curated collection of skills for AI coding agents — autonomous workflows, domain expertise,
 and specialized knowledge packs that make your agent dramatically more effective.
 
-Skills work across all major coding agents. Install once, use everywhere.
+---
+
+## Installing skills
+
+Skills are installed via [skills.sh](https://skills.sh), which automatically detects your
+coding agent and installs to the right location.
+
+```bash
+npx skills add <owner>/<skill-name>
+```
+
+No pre-installation required — runs directly via `npx`. Supports 38+ agents including Claude
+Code, Cursor, Cline, Windsurf, GitHub Copilot, Continue, Codex, Warp, and more.
+
+See the [skills.sh CLI docs](https://skills.sh/docs/cli) for the full command reference
+(`list`, `remove`, `update`, `find`, etc.).
 
 ---
 
@@ -31,159 +46,9 @@ them, keeps improvements, reverts failures, and loops until you stop it (~12 exp
 
 ---
 
-## Installing a skill
-
-Skills use a common `SKILL.md` format. Most agents pick them up by copying the skill directory
-to the right location. Find your agent below.
-
-### Claude Code
-
-```bash
-cp -r autoresearch ~/.claude/skills/
-```
-
-Skills are discovered automatically. The agent loads the full skill when it determines it's
-relevant based on the `description` field in `SKILL.md`.
-
-- **Project-scoped:** `.claude/skills/<skill-name>/SKILL.md`
-- **Global:** `~/.claude/skills/<skill-name>/SKILL.md`
-
-### pi (badlogic/pi)
-
-```bash
-cp -r autoresearch ~/.pi/agent/skills/
-```
-
-Invoke manually with `/skill:autoresearch` or let the agent auto-detect from the description.
-
-- **Project-scoped:** `.pi/skills/<skill-name>/SKILL.md`
-- **Global:** `~/.pi/agent/skills/<skill-name>/SKILL.md`
-
-### Cursor
-
-Cursor uses `.mdc` rule files instead of `SKILL.md`. Adapt the skill by copying its contents
-into a new rule file:
-
-```bash
-# Create the rules directory if it doesn't exist
-mkdir -p .cursor/rules
-
-# Copy skill content as a Cursor rule
-cp autoresearch/SKILL.md .cursor/rules/autoresearch.mdc
-```
-
-Add YAML frontmatter to the `.mdc` file to control when the rule activates:
-
-```yaml
----
-description: "Autoresearch autonomous experiment loop setup and program.md writing"
-alwaysApply: false
----
-```
-
-- **Project-scoped:** `.cursor/rules/*.mdc`
-- **Global:** Cursor Settings → Rules (UI only)
-
-### Windsurf
-
-```bash
-mkdir -p .windsurf/rules
-cp autoresearch/SKILL.md .windsurf/rules/autoresearch.md
-```
-
-- **Project-scoped:** `.windsurf/rules/*.md`
-- **Global:** `~/.codeium/windsurf/memories/global_rules.md` (single file, append content)
-
-### GitHub Copilot
-
-```bash
-cp autoresearch/SKILL.md .github/instructions/autoresearch.instructions.md
-```
-
-Add frontmatter to scope it:
-```yaml
----
-applyTo: "**"
----
-```
-
-Or add key content to `.github/copilot-instructions.md` for repo-wide always-on context.
-
-- **Repo-wide:** `.github/copilot-instructions.md`
-- **Scoped:** `.github/instructions/*.instructions.md`
-
-### Cline
-
-```bash
-mkdir -p .clinerules
-cp autoresearch/SKILL.md .clinerules/autoresearch.md
-```
-
-Cline loads all `.md` and `.txt` files in `.clinerules/` automatically at the start of every task.
-
-- **Project-scoped:** `.clinerules/*.md`
-- **Global:** `~/Documents/Cline/Rules/` (macOS/Linux), `Documents\Cline\Rules\` (Windows)
-
-### Continue
-
-```bash
-mkdir -p .continue/rules
-cp autoresearch/SKILL.md .continue/rules/autoresearch.md
-```
-
-Add frontmatter to control loading:
-```yaml
----
-name: autoresearch
-alwaysApply: false
-description: "Autoresearch autonomous experiment loop setup and program.md writing"
----
-```
-
-- **Project-scoped:** `.continue/rules/*.md`
-- **Global:** `~/.continue/rules/*.md`
-
-### Aider
-
-Aider doesn't auto-load files — pass the skill explicitly at startup:
-
-```bash
-aider --read autoresearch/SKILL.md
-```
-
-Or add it to `.aider.conf.yml` to auto-load in a project:
-
-```yaml
-read: autoresearch/SKILL.md
-```
-
-### Zed
-
-Zed picks up any of these files from the project root automatically:
-`.rules`, `CLAUDE.md`, `AGENTS.md`, `AGENT.md`
-
-```bash
-cat autoresearch/SKILL.md >> .rules
-```
-
-Or use the built-in Rules Library (Agent Panel → `...` → "Rules...") to paste skill content
-and set it as a default or `@mention` it on demand.
-
-### Devin
-
-Devin uses playbooks attached per-session via the web UI. Rename the skill file and drag it in:
-
-```bash
-cp autoresearch/SKILL.md autoresearch.devin.md
-```
-
-Then upload `autoresearch.devin.md` when starting a Devin session at `app.devin.ai`.
-
----
-
 ## Skill format
 
-All skills in this repo use the `SKILL.md` standard compatible with Claude Code and pi:
+All skills use the `SKILL.md` standard:
 
 ```
 skill-name/
@@ -198,29 +63,19 @@ skill-name/
 ---
 name: skill-name          # lowercase, hyphens only
 description: >            # what it does + when to trigger it
-  One or two sentences.
-  Be specific about triggers.
+  One or two sentences. Be specific about triggers.
 ---
 ```
 
 Keep `SKILL.md` under 500 lines. Move detailed reference material to `references/` and link to
-it from `SKILL.md` — agents load reference files only when they need them.
+it — agents load reference files only when they need them.
 
 ---
 
 ## Contributing
 
-To add a new skill:
-
 1. Create a directory: `skill-name/`
-2. Add `SKILL.md` with frontmatter (`name`, `description`) and instructions
+2. Add `SKILL.md` with frontmatter and instructions
 3. Add `references/` docs for anything too detailed for `SKILL.md`
 4. Update this README with a summary entry
 5. Open a PR
-
-**Good skill candidates:** any domain where an agent needs procedural knowledge it doesn't
-already have — proprietary APIs, specialized workflows, domain-specific schemas, opinionated
-tooling, agentic loops, research frameworks.
-
-**Keep skills lean:** `SKILL.md` should contain only what the agent needs to act. Everything
-else belongs in `references/`.

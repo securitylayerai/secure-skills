@@ -11,7 +11,7 @@ Skills are installed via [skills.sh](https://skills.sh), which automatically det
 coding agent and installs to the right location.
 
 ```bash
-npx skills add securitylayerai/skills --skill <skill-name>
+npx skills add securitylayerai/secure-skills --skill <skill-name>
 ```
 
 No pre-installation required — runs directly via `npx`. Supports 38+ agents including Claude
@@ -39,7 +39,7 @@ them, keeps improvements, reverts failures, and loops until you stop it (~12 exp
 
 **Install:**
 ```bash
-npx skills add securitylayerai/skills --skill autoresearch
+npx skills add securitylayerai/secure-skills --skill autoresearch
 ```
 
 **Triggers on:** "autoresearch", "autonomous experiments", "overnight optimization", "program.md"
